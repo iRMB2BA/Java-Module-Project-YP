@@ -1,13 +1,22 @@
 import java.util.Scanner;
 
 public class Main {
-
+    public static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         Calculator calculator = new Calculator();
-        int numberPeople;
         System.out.println("На скольких человек необходимо разделить счёт?");
+        int numberPeople = getNumberGuest();
+        addProduct(calculator);
+        calculator.printListProduct();
+        System.out.println("Количество гостей: " + numberPeople);
+        System.out.println("Общая сумма: " + Formatter.format(calculator.totalAmount()));
+        System.out.println("Сумма к оплате на каждого гостя: "
+                + Formatter.format(calculator.amountGuest(numberPeople)));
+        scanner.close();
+    }
 
+    public static int getNumberGuest() {
+        int numberPeople;
         do {
             while (true) {
                 try {
@@ -29,7 +38,9 @@ public class Main {
             }
         } while (numberPeople <= 1);
 
-        System.out.println("Введите название товара и его стоимость.");
+        return numberPeople;
+    }
+    public static void addProduct(Calculator calculator) {
         do {
             System.out.println("Название:");
             String name = scanner.next();
@@ -38,22 +49,19 @@ public class Main {
 
             while (true) {
                 try {
-                    price = Double.parseDouble(scanner.next());
+                    price = scanner.nextDouble();
                     break;
-                } catch (NumberFormatException e) {
+                } catch (Exception e) {
                     System.out.println("Некорректное значение, пожалуйста повторите ввод.");
+                    scanner.nextLine();
                 }
             }
 
             calculator.addProduct(new Product(name, price));
             System.out.println("Товар успешно добавлен.\nХотите добавить еще один товар? ");
         } while (!scanner.next().equalsIgnoreCase("Завершить"));
-
-        calculator.printListProduct();
-        System.out.println("Количество гостей: " + numberPeople);
-        System.out.println("Общая сумма: " + Formatter.format(calculator.totalAmount()));
-        System.out.println("Сумма к оплате на каждого гостя: "
-                + Formatter.format(calculator.amountGuest(numberPeople)));
-        scanner.close();
     }
+
+
+
 }

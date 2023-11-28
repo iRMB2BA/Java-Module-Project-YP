@@ -2,6 +2,7 @@ import java.util.Scanner;
 
 public class Main {
     public static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
         Calculator calculator = new Calculator();
         System.out.println("На скольких человек необходимо разделить счёт?");
@@ -40,6 +41,7 @@ public class Main {
 
         return numberPeople;
     }
+
     public static void addProduct(Calculator calculator) {
         do {
             System.out.println("Название:");
@@ -50,18 +52,25 @@ public class Main {
             while (true) {
                 try {
                     price = scanner.nextDouble();
-                    break;
+
+                    if (price < 0) {
+                        System.out.println("Некорректное значение, пожалуйста повторите ввод.");
+                    } else {
+                        break;
+                    }
+
                 } catch (Exception e) {
                     System.out.println("Некорректное значение, пожалуйста повторите ввод.");
                     scanner.nextLine();
                 }
+
+
             }
 
             calculator.addProduct(new Product(name, price));
             System.out.println("Товар успешно добавлен.\nХотите добавить еще один товар? ");
         } while (!scanner.next().equalsIgnoreCase("Завершить"));
     }
-
 
 
 }
